@@ -1,4 +1,5 @@
-# graphylo
+# Graphylo
+Graphylo is a Deep-Learning model that aims to extract useful information from evolutionary genome data. In order to run Graphylo, the genome alignment data of different species with their reconstructed ancestral sequences are needed.
 
 1. Start with making necessary repositories. $mkdir data   $mkdir graphs
 2. Download the sequence alignment data(.maf) to the data repository. You can download them from http://repo.cs.mcgill.ca/PUB/blanchem/Boreoeutherian/
