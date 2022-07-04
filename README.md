@@ -1,5 +1,5 @@
 # Graphylo
-Graphylo is a Deep-Learning model that aims to extract useful information from evolutionary genome data. In order to run Graphylo, the genome alignment data of different species with their reconstructed ancestral sequences are needed.
+Graphylo is a Deep-Learning model that aims to extract useful information from evolutionary genome data. In order to run Graphylo, the genome alignment data of different species with their reconstructed ancestral sequences are needed. You also need .bed files indicating the hg38 coordinates that corresponds to the training data you want to make.
 
 ## Downloading and Preprocessing alignment data.
 1. Start with making necessary repositories. $mkdir data   $mkdir graphs
