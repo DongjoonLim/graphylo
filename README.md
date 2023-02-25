@@ -15,4 +15,4 @@ see data/example/bed
 
 ## Training graphylo
 7. Run train_graphylo_siamese.py to train graphylo with the data you have preprocessed previously. python3 train_graphylo_siamese.py data_path output_model_path target_path gpu
-* example) python3 train_graphylo_siamese.py data/example_X.npy Models/model data/example_y 3
+* example) python3 train_graphylo_siamese.py data/example_X.npy Models/model data/example_y.npy 3
