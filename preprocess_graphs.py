@@ -53,7 +53,7 @@ for i, target in tqdm(zip(indices, y_true)):
         example = np.array(example).astype('uint8')
         assert example.shape == (115, context*4+2)
         examples.append(example)
-        targets.appendtarget()
+        targets.append(target)
     except Exception as e:
         print(e)
         continue
