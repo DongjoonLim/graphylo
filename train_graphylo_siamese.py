@@ -12,7 +12,7 @@ import random
 import string
 from tqdm import tqdm
 import pandas as pd
-# from spektral.data import Dataset, DisjointLoader, Graph, BatchLoader, MixedLoader
+from spektral.data import Dataset, DisjointLoader, Graph, BatchLoader, MixedLoader
 import numpy as np
 import scipy.sparse as sp
 import tensorflow as tf
@@ -22,10 +22,10 @@ from tensorflow.keras.metrics import CategoricalAccuracy
 from tensorflow.keras.models import Model
 from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.models import Model
-# from spektral.layers import GCNConv, GlobalSumPool, AGNNConv, GATConv
-# from spektral.layers.pooling import TopKPool
-# from spektral.transforms.normalize_adj import NormalizeAdj
-# from spektral.transforms.gcn_filter import GCNFilter
+from spektral.layers import GCNConv, GlobalSumPool, AGNNConv, GATConv
+from spektral.layers.pooling import TopKPool
+from spektral.transforms.normalize_adj import NormalizeAdj
+from spektral.transforms.gcn_filter import GCNFilter
 import networkx as nx
 import matplotlib.pyplot as plt
 from scipy.linalg import fractional_matrix_power
@@ -65,70 +65,70 @@ print(list(le.classes_))
 # sns.set()
 
 # #Initialize the graph
-# G = nx.Graph(name='G')
-# os.environ["CUDA_VISIBLE_DEVICES"]="{}".format(gpu)
+G = nx.Graph(name='G')
+os.environ["CUDA_VISIBLE_DEVICES"]=f"{gpu}"
 # #Create nodes
 
 # #Each node is assigned node feature which corresponds to the node name
-# names = ['hg38', 'panTro4','gorGor3', 'ponAbe2', 'nomLeu3', 'rheMac3', 'macFas5', 'papAnu2', 'chlSab2', 'calJac3', 'saiBol1', 'otoGar3', 'tupChi1', 
-#          'speTri2', 'jacJac1', 'micOch1', 'criGri1', 'mesAur1', 'mm10', 'rn6', 'hetGla2', 'cavPor3','chiLan1', 'octDeg1',
-#          'oryCun2', 'ochPri3','susScr3','vicPac2','camFer1','turTru2', 'orcOrc1', 'panHod1','bosTau8','oviAri3','capHir1','equCab2','cerSim1','felCat8','canFam3',
-#           'musFur1','ailMel1', 'odoRosDiv1', 'lepWed1','pteAle1','pteVam1',  'eptFus1', 'myoDav1','myoLuc2','eriEur2',
-#         'sorAra2', 'conCri1','loxAfr3', 'eleEdw1','triMan1','chrAsi1','echTel2','oryAfe1','dasNov3',
-#           '_HP', '_HPG', '_HPGP', '_HPGPN', '_RM', '_RMP', '_RMPC', '_HPGPNRMPC', '_CS', '_HPGPNRMPCCS', '_HPGPNRMPCCSO' , '_HPGPNRMPCCSOT',
-#          '_CM', '_MR', '_MCM', '_MCMMR', '_JMCMMR', '_SJMCMMR', '_CO', '_CCO', '_HCCO', '_SJMCMMRHCCO', '_OO', '_SJMCMMRHCCOOO', '_HPGPNRMPCCSOTSJMCMMRHCCOOO'
-#         , '_VC', '_TO', '_OC', '_BOC', '_PBOC', '_TOPBOC', '_VCTOPBOC', '_SVCTOPBOC',
-#           '_EC', '_OL', '_AOL', '_MAOL', '_CMAOL' , '_FCMAOL', '_ECFCMAOL',
-#           '_PP', '_MM', '_EMM', '_PPEMM', '_ECFCMAOLPPEMM', '_SVCTOPBOCECFCMAOLPPEMM',
-#           '_SC', '_ESC', '_SVCTOPBOCECFCMAOLPPEMMESC', '_HPGPNRMPCCSOTSJMCMMRHCCOOOSVCTOPBOCECFCMAOLPPEMMESC',
-#           '_LE', '_LET', '_CE', '_LETCE', '_LETCEO', '_LETCEOD', '_HPGPNRMPCCSOTSJMCMMRHCCOOOSVCTOPBOCECFCMAOLPPEMMESCLETCEOD'
-#          ]
-# for a,b in enumerate(names):
-#     G.add_node(b, name=a)
-# # for i in range(5):
-# #     G.add_node(i, name=i)
-# #edges
-# edges = [('hg38','_HP'),('panTro4','_HP'),('gorGor3','_HPG'),('ponAbe2','_HPGP'),('_HP','_HPG'), ('_HPG','_HPGP'), ('nomLeu3', '_HPGPN'), 
-#          ('_HPGP', '_HPGPN'), ('_HPGPN', '_HPGPNRMPC'), ('_HPGPNRMPC', '_HPGPNRMPCCS'), ('_HPGPNRMPCCS', '_HPGPNRMPCCSO'), 
-#          ('_HPGPNRMPCCSO', '_HPGPNRMPCCSOT'), ('rheMac3', '_RM'), ('macFas5', '_RM'), ('_RM', '_RMP'), ('papAnu2', '_RMP'),
-#          ('_RMP', '_RMPC'), ('chlSab2', '_RMPC'), ('_RMPC', '_HPGPNRMPC'), ('calJac3','_CS'), ('saiBol1','_CS') , ('_CS', '_HPGPNRMPCCS'),
-#          ('otoGar3', '_HPGPNRMPCCSO'), ('tupChi1','_HPGPNRMPCCSOT'), 
-#          ('speTri2', '_SJMCMMR'), ('_SJMCMMR','_JMCMMR'), ('jacJac1','_JMCMMR'), ('micOch1', '_MCM'), ('_MCMMR','_JMCMMR'), ('_MCM','_MCMMR'),
-#          ('_CM','_MCM'), ('_MR','_MCMMR'), ('criGri1', '_CM'), ('mesAur1', '_CM'), ('mm10','_MR'), ('rn6','_MR'), ('_SJMCMMRHCCO', '_HCCO'),
-#          ('_SJMCMMRHCCO','_SJMCMMR'),
-#          ('_SJMCMMRHCCO','_SJMCMMRHCCOOO'), ('_HPGPNRMPCCSOTSJMCMMRHCCOOO','_HPGPNRMPCCSOT'), ('_HPGPNRMPCCSOTSJMCMMRHCCOOO','_SJMCMMRHCCOOO'),
-#          ('_CCO', '_HCCO'),('_CO', '_CCO'),('_OO','_SJMCMMRHCCOOO'),('hetGla2', '_HCCO'),('cavPor3', '_CCO'),('chiLan1', '_CO'),
-#          ('octDeg1', '_CO'),('oryCun2', '_OO'),('ochPri3', '_OO'),
-#          ('vicPac2','_VC'), ('camFer1','_VC'), ('susScr3', '_SVCTOPBOC'), ('turTru2','_TO'), ('orcOrc1','_TO'),
-#          ('oviAri3','_OC'), ('capHir1', '_OC'), ('bosTau8','_BOC'), ('_OC','_BOC'), ('panHod1','_PBOC'),
-#          ('_BOC','_PBOC'), ('_PBOC','_TOPBOC') , ('_TO','_TOPBOC'), ('_TOPBOC','_VCTOPBOC'), ('_VC','_VCTOPBOC'),
-#          ('_VCTOPBOC','_SVCTOPBOC'), ('susScr3','_SVCTOPBOC'),
-#          ('equCab2','_EC'), ('cerSim1','_EC'), ('odoRosDiv1','_OL'), ('lepWed1','_OL'), ('_OL','_AOL'),
-#          ('ailMel1','_AOL'), ('_AOL', '_MAOL'), ('musFur1', '_MAOL'), ('_MAOL','_CMAOL'), ('canFam3','_CMAOL'),
-#          ('_CMAOL','_FCMAOL'), ('felCat8','_FCMAOL'), ('_FCMAOL', '_ECFCMAOL'), ('_EC', '_ECFCMAOL'),
-#          ('pteAle1', '_PP'), ('pteVam1','_PP'), ('myoDav1','_MM'), ('myoLuc2','_MM'), ('eptFus1','_EMM'), ('_MM','_EMM'),
-#          ('_EMM','_PPEMM'), ('_PP','_PPEMM'),('_PPEMM','_ECFCMAOLPPEMM'),('_ECFCMAOL','_ECFCMAOLPPEMM'),('_ECFCMAOLPPEMM','_SVCTOPBOCECFCMAOLPPEMM'),('_SVCTOPBOC','_SVCTOPBOCECFCMAOLPPEMM'),
-#          ('sorAra2','_SC'), ('conCri1', '_SC'), ('_SC','_ESC'), ('eriEur2','_ESC'),
-#          ('_ESC','_SVCTOPBOCECFCMAOLPPEMMESC'), ('_SVCTOPBOCECFCMAOLPPEMM','_SVCTOPBOCECFCMAOLPPEMMESC'), ('_SVCTOPBOCECFCMAOLPPEMM','_HPGPNRMPCCSOTSJMCMMRHCCOOOSVCTOPBOCECFCMAOLPPEMMESC'), ('_HPGPNRMPCCSOTSJMCMMRHCCOOO','_HPGPNRMPCCSOTSJMCMMRHCCOOOSVCTOPBOCECFCMAOLPPEMMESC'),
-#          ('loxAfr3','_LE'), ('eleEdw1','_LE'), ('triMan1','_LET'), ('_LE', '_LET'), ('chrAsi1','_CE'), ('echTel2','_CE'),
-#          ('_LET','_LETCE'), ('_CE','_LETCE'), ('_LETCE','_LETCEO'), ('oryAfe1','_LETCEO'),('_LETCEO','_LETCEOD'), ('dasNov3', '_LETCEOD'), ('_LETCEOD', '_HPGPNRMPCCSOTSJMCMMRHCCOOOSVCTOPBOCECFCMAOLPPEMMESCLETCEOD'),('_HPGPNRMPCCSOTSJMCMMRHCCOOOSVCTOPBOCECFCMAOLPPEMMESC', '_HPGPNRMPCCSOTSJMCMMRHCCOOOSVCTOPBOCECFCMAOLPPEMMESCLETCEOD')
-#         ]
+names = ['hg38', 'panTro4','gorGor3', 'ponAbe2', 'nomLeu3', 'rheMac3', 'macFas5', 'papAnu2', 'chlSab2', 'calJac3', 'saiBol1', 'otoGar3', 'tupChi1', 
+         'speTri2', 'jacJac1', 'micOch1', 'criGri1', 'mesAur1', 'mm10', 'rn6', 'hetGla2', 'cavPor3','chiLan1', 'octDeg1',
+         'oryCun2', 'ochPri3','susScr3','vicPac2','camFer1','turTru2', 'orcOrc1', 'panHod1','bosTau8','oviAri3','capHir1','equCab2','cerSim1','felCat8','canFam3',
+          'musFur1','ailMel1', 'odoRosDiv1', 'lepWed1','pteAle1','pteVam1',  'eptFus1', 'myoDav1','myoLuc2','eriEur2',
+        'sorAra2', 'conCri1','loxAfr3', 'eleEdw1','triMan1','chrAsi1','echTel2','oryAfe1','dasNov3',
+          '_HP', '_HPG', '_HPGP', '_HPGPN', '_RM', '_RMP', '_RMPC', '_HPGPNRMPC', '_CS', '_HPGPNRMPCCS', '_HPGPNRMPCCSO' , '_HPGPNRMPCCSOT',
+         '_CM', '_MR', '_MCM', '_MCMMR', '_JMCMMR', '_SJMCMMR', '_CO', '_CCO', '_HCCO', '_SJMCMMRHCCO', '_OO', '_SJMCMMRHCCOOO', '_HPGPNRMPCCSOTSJMCMMRHCCOOO'
+        , '_VC', '_TO', '_OC', '_BOC', '_PBOC', '_TOPBOC', '_VCTOPBOC', '_SVCTOPBOC',
+          '_EC', '_OL', '_AOL', '_MAOL', '_CMAOL' , '_FCMAOL', '_ECFCMAOL',
+          '_PP', '_MM', '_EMM', '_PPEMM', '_ECFCMAOLPPEMM', '_SVCTOPBOCECFCMAOLPPEMM',
+          '_SC', '_ESC', '_SVCTOPBOCECFCMAOLPPEMMESC', '_HPGPNRMPCCSOTSJMCMMRHCCOOOSVCTOPBOCECFCMAOLPPEMMESC',
+          '_LE', '_LET', '_CE', '_LETCE', '_LETCEO', '_LETCEOD', '_HPGPNRMPCCSOTSJMCMMRHCCOOOSVCTOPBOCECFCMAOLPPEMMESCLETCEOD'
+         ]
+for a,b in enumerate(names):
+    G.add_node(b, name=a)
+# for i in range(5):
+#     G.add_node(i, name=i)
+#edges
+edges = [('hg38','_HP'),('panTro4','_HP'),('gorGor3','_HPG'),('ponAbe2','_HPGP'),('_HP','_HPG'), ('_HPG','_HPGP'), ('nomLeu3', '_HPGPN'), 
+         ('_HPGP', '_HPGPN'), ('_HPGPN', '_HPGPNRMPC'), ('_HPGPNRMPC', '_HPGPNRMPCCS'), ('_HPGPNRMPCCS', '_HPGPNRMPCCSO'), 
+         ('_HPGPNRMPCCSO', '_HPGPNRMPCCSOT'), ('rheMac3', '_RM'), ('macFas5', '_RM'), ('_RM', '_RMP'), ('papAnu2', '_RMP'),
+         ('_RMP', '_RMPC'), ('chlSab2', '_RMPC'), ('_RMPC', '_HPGPNRMPC'), ('calJac3','_CS'), ('saiBol1','_CS') , ('_CS', '_HPGPNRMPCCS'),
+         ('otoGar3', '_HPGPNRMPCCSO'), ('tupChi1','_HPGPNRMPCCSOT'), 
+         ('speTri2', '_SJMCMMR'), ('_SJMCMMR','_JMCMMR'), ('jacJac1','_JMCMMR'), ('micOch1', '_MCM'), ('_MCMMR','_JMCMMR'), ('_MCM','_MCMMR'),
+         ('_CM','_MCM'), ('_MR','_MCMMR'), ('criGri1', '_CM'), ('mesAur1', '_CM'), ('mm10','_MR'), ('rn6','_MR'), ('_SJMCMMRHCCO', '_HCCO'),
+         ('_SJMCMMRHCCO','_SJMCMMR'),
+         ('_SJMCMMRHCCO','_SJMCMMRHCCOOO'), ('_HPGPNRMPCCSOTSJMCMMRHCCOOO','_HPGPNRMPCCSOT'), ('_HPGPNRMPCCSOTSJMCMMRHCCOOO','_SJMCMMRHCCOOO'),
+         ('_CCO', '_HCCO'),('_CO', '_CCO'),('_OO','_SJMCMMRHCCOOO'),('hetGla2', '_HCCO'),('cavPor3', '_CCO'),('chiLan1', '_CO'),
+         ('octDeg1', '_CO'),('oryCun2', '_OO'),('ochPri3', '_OO'),
+         ('vicPac2','_VC'), ('camFer1','_VC'), ('susScr3', '_SVCTOPBOC'), ('turTru2','_TO'), ('orcOrc1','_TO'),
+         ('oviAri3','_OC'), ('capHir1', '_OC'), ('bosTau8','_BOC'), ('_OC','_BOC'), ('panHod1','_PBOC'),
+         ('_BOC','_PBOC'), ('_PBOC','_TOPBOC') , ('_TO','_TOPBOC'), ('_TOPBOC','_VCTOPBOC'), ('_VC','_VCTOPBOC'),
+         ('_VCTOPBOC','_SVCTOPBOC'), ('susScr3','_SVCTOPBOC'),
+         ('equCab2','_EC'), ('cerSim1','_EC'), ('odoRosDiv1','_OL'), ('lepWed1','_OL'), ('_OL','_AOL'),
+         ('ailMel1','_AOL'), ('_AOL', '_MAOL'), ('musFur1', '_MAOL'), ('_MAOL','_CMAOL'), ('canFam3','_CMAOL'),
+         ('_CMAOL','_FCMAOL'), ('felCat8','_FCMAOL'), ('_FCMAOL', '_ECFCMAOL'), ('_EC', '_ECFCMAOL'),
+         ('pteAle1', '_PP'), ('pteVam1','_PP'), ('myoDav1','_MM'), ('myoLuc2','_MM'), ('eptFus1','_EMM'), ('_MM','_EMM'),
+         ('_EMM','_PPEMM'), ('_PP','_PPEMM'),('_PPEMM','_ECFCMAOLPPEMM'),('_ECFCMAOL','_ECFCMAOLPPEMM'),('_ECFCMAOLPPEMM','_SVCTOPBOCECFCMAOLPPEMM'),('_SVCTOPBOC','_SVCTOPBOCECFCMAOLPPEMM'),
+         ('sorAra2','_SC'), ('conCri1', '_SC'), ('_SC','_ESC'), ('eriEur2','_ESC'),
+         ('_ESC','_SVCTOPBOCECFCMAOLPPEMMESC'), ('_SVCTOPBOCECFCMAOLPPEMM','_SVCTOPBOCECFCMAOLPPEMMESC'), ('_SVCTOPBOCECFCMAOLPPEMM','_HPGPNRMPCCSOTSJMCMMRHCCOOOSVCTOPBOCECFCMAOLPPEMMESC'), ('_HPGPNRMPCCSOTSJMCMMRHCCOOO','_HPGPNRMPCCSOTSJMCMMRHCCOOOSVCTOPBOCECFCMAOLPPEMMESC'),
+         ('loxAfr3','_LE'), ('eleEdw1','_LE'), ('triMan1','_LET'), ('_LE', '_LET'), ('chrAsi1','_CE'), ('echTel2','_CE'),
+         ('_LET','_LETCE'), ('_CE','_LETCE'), ('_LETCE','_LETCEO'), ('oryAfe1','_LETCEO'),('_LETCEO','_LETCEOD'), ('dasNov3', '_LETCEOD'), ('_LETCEOD', '_HPGPNRMPCCSOTSJMCMMRHCCOOOSVCTOPBOCECFCMAOLPPEMMESCLETCEOD'),('_HPGPNRMPCCSOTSJMCMMRHCCOOOSVCTOPBOCECFCMAOLPPEMMESC', '_HPGPNRMPCCSOTSJMCMMRHCCOOOSVCTOPBOCECFCMAOLPPEMMESCLETCEOD')
+        ]
 
-# # edges = [(0,3),(1,3),(2,4),(3,4)]
-# G.add_edges_from(edges)
+# edges = [(0,3),(1,3),(2,4),(3,4)]
+G.add_edges_from(edges)
 
-# print('Graph Info:\n', nx.info(G))
+print('Graph Info:\n', nx.info(G))
 
-# print('\nGraph Nodes: ', G.nodes.data())
+print('\nGraph Nodes: ', G.nodes.data())
 
-# #Plot the graph
-# # plt.figure(figsize=(15,15)) 
-# # nx.draw(G, with_labels=True, font_weight='bold')
-# # plt.show()
-# print(len(names), len(edges))
+#Plot the graph
+# plt.figure(figsize=(15,15)) 
+# nx.draw(G, with_labels=True, font_weight='bold')
+# plt.show()
+print(len(names), len(edges))
 
-# A = np.array(nx.attr_matrix(G, node_attr='name')[0])
-# print(A)
+A = np.array(nx.attr_matrix(G, node_attr='name')[0])
+print(A)
 # class ModDataset(Dataset):
 
 #     def __init__(self,seqdf, rawdf, a, margin, **kwargs):
@@ -660,45 +660,42 @@ def model1D_siamese_onehot_se(X_train_shape):
 def model1D_siamese_se(X_train_shape):
     tf.keras.backend.clear_session()
     length = int(X_train_shape[2]/2)
-    input = Input(shape=(X_train_shape[1:]), dtype='uint8')
-    x = tf.one_hot(input, 6)
-    x = species_attention(x)
-    x = spatial_attention(x)
+    inputs = Input(shape=(X_train_shape[1:]), dtype='uint8')
+    x = tf.one_hot(inputs, 6)
     inputs_l, inputs_r = tf.split(x, [length,length], 2)
     print(inputs_r.shape)
-    shared_conv = Conv1D(32, 10, padding = 'same', activation='relu', input_shape=inputs_l.shape[2:])
-    shared_conv2 = Conv1D(32, 10, padding = 'same', activation='relu', input_shape=inputs_l.shape[2:])
+    shared_conv = Conv1D(32, 11, padding = 'same', activation='relu', input_shape=inputs_l.shape[2:])
+    shared_conv2 = Conv1D(32, 11, padding = 'same', activation='relu', input_shape=inputs_l.shape[2:])
     x = shared_conv(inputs_l)
-    x = species_attention(x)
     x = channel_attention(x)
     print(x.shape)
     x_right = shared_conv2(inputs_r)
-    x = species_attention(x)
     x = channel_attention(x)
     x_right = tf.reverse(x_right, [2])
-    x = tf.keras.layers.Concatenate(axis = -1)([x, x_right])
+    x = tf.concat([x, x_right], -1)
     print(x.shape)
     x = MaxPooling2D((2,1), data_format='channels_first')(x)
     print(x.shape)
-    x = Conv1D(32, 10, padding = 'same', activation='relu', input_shape=x.shape[2:])(x)
+    x = Conv1D(32, 11, padding = 'same', activation='relu', input_shape=x.shape[2:])(x)
     x = species_attention(x)
-    x = channel_attention(x)
+    x = Dropout(.3)(x)
     x = MaxPooling2D((2, 1), data_format='channels_first')(x)
     print(x.shape)
 
     
-#     x = Reshape(( x.shape[1], -1))(x)
-#     x = GCNConv(32, activation="relu")([x,A])
-#     x = Dropout(.3)(x)
-#     x = GCNConv(32, activation="relu")([x,A])
-#     x = Dropout(.3)(x)
+    x = Reshape((x.shape[1], -1))(x)
+    x = GCNConv(32, activation="relu")([x,A])
+    x = Dropout(.3)(x)
+    x = GCNConv(32, activation="relu", kernel_regularizer=l2(5e-4))([x,A])
+    x = Dropout(.3)(x)
+    print(x.shape)
     x = Flatten()(x)
     x = Dense(64, activation='relu')(x)
     x = Dropout(.5)(x)
-    logits = Dense(2, name='logits')(x)
+    logits = Dense(1, name='logits')(x)
     outputs = Activation('softmax', name='softmax')(logits)
-    model = Model(inputs=input, outputs=outputs)
-    model.compile(loss='categorical_crossentropy',
+    model = Model(inputs=inputs, outputs=outputs)
+    model.compile(loss='categorical_crossentropy',#BinaryFocalLoss(gamma=2),#'categorical_crossentropy',
                   optimizer='adam',
                   metrics=['accuracy'])
     return model
@@ -714,9 +711,9 @@ y_train = np.load(target_path)
 # X_train_onehot = get_one_hot(X_train, 6)
 # np.save('graphs/{}/X_revCompConcatenated_onehot_{}.npy'.format(transcriptionFactor,celltype), X_train_onehot)
 
-print(X_train.shape)
+print(X_train.shape, y_train.shape)
 
-X_train, X_val, y_train, y_val = train_test_split(X_train, y_train, test_size=0.4, random_state=42)
+X_train, X_val, y_train, y_val = train_test_split(X_train, y_train, test_size=0.2, random_state=42)
 # X_val, X_test,  y_val, y_test = train_test_split(X_val,  y_val, test_size=0.5, random_state=42)
 
 
