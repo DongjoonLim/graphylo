@@ -2,7 +2,6 @@ from sklearn.preprocessing import LabelEncoder
 # from Bio import AlignIO
 from sklearn.preprocessing import OneHotEncoder
 from sklearn.preprocessing import LabelEncoder
-from keras_preprocessing import sequence
 import sklearn
 import numpy as np
 import re
