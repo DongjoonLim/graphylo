@@ -4,6 +4,8 @@ Graphylo is a Deep-Learning model that aims to extract useful information from e
 ## Downloading and Preprocessing alignment data.
 1. Start with making necessary repositories. $mkdir data   $mkdir Models 
 2. create conda environment from yaml file. conda env create -f environment.yml
+pip install spektral
+pip install tensorflow==2.5.0
 3. Download the sequence alignment data(.maf) to the data repository. You can download them from http://repo.cs.mcgill.ca/PUB/blanchem/Boreoeutherian/
 4. Run the parserPreprocess.py to convert maf file to npy file that is easier to preprocess training sets. The resulting .pkl file will be saved in the repository.
 5. make .bed file where each line is in the format 
