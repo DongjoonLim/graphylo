@@ -53,14 +53,15 @@ from tensorflow.saved_model import save, load
 import os
 import sys
 
-transcriptionFactor = sys.argv[1]
-celltype = sys.argv[2]
-gpu = int(sys.argv[3])
+data_path = sys.argv[1]
+model_path = sys.argv[2]
+target_path = sys.argv[3]
+gpu = int(sys.argv[4])
+
 le = LabelEncoder()
 le.fit(['A', 'C', 'G', 'T', 'N', '-'])
 print(le.transform(['A', 'C', 'G', 'T', 'N', '-']))
 print(list(le.classes_))
-print(transcriptionFactor, celltype)
 # sns.set()
 
 # #Initialize the graph
@@ -708,21 +709,19 @@ from sklearn.model_selection import train_test_split
 def get_one_hot(targets, nb_classes):
     res = np.eye(nb_classes, dtype=np.uint8)[np.array(targets).reshape(-1)].astype('uint8')
     return res.reshape(list(targets.shape)+[nb_classes])
-X_train = np.load('graphs/{}/X_revCompConcatenatedTrue_{}.npy'.format(transcriptionFactor,celltype)).astype('uint8')
-y_train = np.load('graphs/{}/y_revCompConcatenated_{}.npy'.format(transcriptionFactor,celltype))
+X_train = np.load(data_path).astype('uint8')
+y_train = np.load(target_path)
 # X_train_onehot = get_one_hot(X_train, 6)
 # np.save('graphs/{}/X_revCompConcatenated_onehot_{}.npy'.format(transcriptionFactor,celltype), X_train_onehot)
-X_train_onehot = np.load('graphs/{}/X_revCompConcatenated_onehot_{}.npy'.format(transcriptionFactor,celltype)).astype('uint8')
-X_train_onehot_human = X_train_onehot[:,0:1,:,:]
-print(X_train.shape, X_train_onehot.shape)
 
-print(X_train_onehot[:,0:1,:,:].shape)
-X_train, X_val, X_train_onehot, X_val_onehot, y_train, y_val, X_train_onehot_human, X_val_onehot_human = train_test_split(X_train,X_train_onehot, y_train, X_train_onehot_human, test_size=0.4, random_state=42)
-X_val, X_test, X_val_onehot, X_test_onehot, y_val, y_test, X_val_onehot_human, X_test_onehot_human = train_test_split(X_val, X_val_onehot , y_val, X_val_onehot_human, test_size=0.5, random_state=42)
+print(X_train.shape)
+
+X_train, X_val, y_train, y_val = train_test_split(X_train, y_train, test_size=0.4, random_state=42)
+# X_val, X_test,  y_val, y_test = train_test_split(X_val,  y_val, test_size=0.5, random_state=42)
 
 
 def modelFit(filepath, epoch, batchSize, X_train, y_train, X_val, y_val, model):
-    callback = tf.keras.callbacks.EarlyStopping(monitor='val_loss', patience=25, restore_best_weights=True)
+    callback = tf.keras.callbacks.EarlyStopping(monitor='val_loss', patience=10, restore_best_weights=True)
     checkpoint = tf.keras.callbacks.ModelCheckpoint(filepath, monitor='val_loss', verbose=1, save_best_only=True)
     
     model.summary()
@@ -747,9 +746,9 @@ hidden_sizes = [64]
 for hidden in hidden_sizes:
     print(hidden)
     model1d_siamese_se= model1D_siamese_se(X_train.shape)
-    model1d_siamese_onehot_se= model1D_siamese_onehot_se(X_train_onehot.shape)
-    hist, model1d_siamese_onehot_se = modelFit('kerasModels/model{}_conv1d_siamese_{}_{}_hidden{}_revCompConcatenated_onehot_se'.format(201,transcriptionFactor, celltype, 64), 9000, 64, X_train_onehot, y_train, X_val_onehot, y_val, model1d_siamese_onehot_se)
-    hist, model1d_siamese_se = modelFit('kerasModels/model{}_conv1d_siamese_{}_{}_hidden{}_revCompConcatenated_se'.format(201,transcriptionFactor, celltype, 64), 9000, 64, X_train, y_train, X_val, y_val, model1d_siamese_se)
+    # model1d_siamese_onehot_se= model1D_siamese_onehot_se(X_train_onehot.shape)
+    # hist, model1d_siamese_onehot_se = modelFit('kerasModels/model{}_conv1d_siamese_{}_{}_hidden{}_revCompConcatenated_onehot_se'.format(201,transcriptionFactor, celltype, 64), 9000, 64, X_train_onehot, y_train, X_val_onehot, y_val, model1d_siamese_onehot_se)
+    hist, model1d_siamese_se = modelFit('{}'.format(model_path), 9000, 64, X_train, y_train, X_val, y_val, model1d_siamese_se)
 
     # model_conv3d = model_conv3d_siamese(X_train)
     # hist_conv3d,model15_conv3d = modelFit('kerasModels/model{}_conv3d_siamese_{}_{}_hidden{}_revCompConcatenated'.format(201,transcriptionFactor, celltype, hidden), 9000, 256, X_train, y_train, X_val, y_val, model_conv3d)
