@@ -16,3 +16,8 @@ see data/example/bed
 ## Training graphylo
 7. Run train_graphylo_siamese.py to train graphylo with the data you have preprocessed previously. python3 train_graphylo_siamese.py data_path output_model_path target_path gpu
 * example) python3 train_graphylo_siamese.py data/example_X.npy Models/model data/example_y.npy 3
+
+## Predicting using Graphylo
+1. you can simply write model.predict(some_data) to predict data
+* model_evolstm = tf.keras.models.load_model(f'models/evolstm_mutation')
+* predictions_graphylo_lstm = model_evolstm.predict(examples_graphylo, batch_size=64)
