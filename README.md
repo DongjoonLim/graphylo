@@ -19,7 +19,7 @@ pip install numpy==1.20.3
 4. Run the parserPreprocess.py to convert maf file to npy file that is easier to preprocess training sets. The resulting .pkl file will be saved in the repository.
 5. make .bed file for each chromosome that contains training data coordinates in hg38 assembly. where each line is in the format
 
-*chr1    index  index+1  binary_label 
+*chr1    index    index+1    binary_label 
 
 see data/example.bed
 
