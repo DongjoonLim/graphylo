@@ -7,6 +7,8 @@ Graphylo is a Deep-Learning model that aims to extract useful information from e
 
 conda env create -f environment.yml
 
+conda activate graphylo
+
 pip install spektral
 
 pip install tensorflow==2.5.0
