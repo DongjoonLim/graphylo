@@ -28,7 +28,7 @@ see data/example.bed
 7. Run the preprocessRevComp.py to concatenate reverse complement to the original training set.
 
 ## Training graphylo
-1. Merge training set and training label into one large dataset. For example, concatenate all 22 files for 22 autosomes and create one big example_X.npy and example_y.npy
+1. Merge training set and training label into one large dataset by concatenating them all with repect to axis=0. For example, concatenate all 22 files for 22 autosomes and create one big example_X.npy and example_y.npy
 2. Run train_graphylo_siamese.py to train graphylo with the data you have preprocessed previously. python3 train_graphylo_siamese.py data_path output_model_path target_path gpu
 * example) python3 train_graphylo_siamese.py data/example_X.npy Models/model data/example_y.npy 3
 
