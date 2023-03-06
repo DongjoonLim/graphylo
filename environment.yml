@@ -343,4 +343,4 @@ dependencies:
     - yarl==1.5.1
     - yaspin==2.1.0
     - zipp==3.7.0
-prefix: /home/mcb/users/dlim63/.conda/envs/graph
+prefix: /home/mcb/users/dlim63/.conda/envs/graphylo
