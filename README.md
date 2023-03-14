@@ -9,6 +9,10 @@ conda env create -f environment.yml
 
 conda activate graphylo
 
+pip install focal_loss
+
+pip install pandas==1.3.4
+
 pip install spektral
 
 pip install tensorflow==2.5.0
@@ -17,7 +21,6 @@ pip install numpy==1.20.3
 
 pip install pyBigWig
 
-pip install focal_loss
 
 3. Download the sequence alignment data(.maf) to the data repository. You can download them from http://repo.cs.mcgill.ca/PUB/blanchem/Boreoeutherian/
 4. Run the parserPreprocess.py to convert maf file to npy file that is easier to preprocess training sets. The resulting .pkl file will be saved in the repository.
