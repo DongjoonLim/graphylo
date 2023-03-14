@@ -441,7 +441,7 @@ def model_conv3d_siamese(X_train_shape):
     logits = Dense(2, name='logits')(x)
     outputs = Activation('softmax', name='softmax')(logits)
     model = Model(inputs=inputs, outputs=outputs)
-    model.compile(loss='categorical_crossentropy',
+    model.compile(loss='binary_crossentropy',
                   optimizer='adam',
                   metrics=['accuracy'])
     return model
@@ -551,7 +551,7 @@ def model_conv3d_bahdanau_onehot(X_train_shape):
     logits = Dense(2, name='logits')(x)
     outputs = Activation('softmax', name='softmax')(logits)
     model_attention = Model(inputs=inputs, outputs=outputs)
-    model_attention.compile(loss='categorical_crossentropy',
+    model_attention.compile(loss='binary_crossentropy',
                   optimizer='adam',
                   metrics=['accuracy'])
     return model_attention
@@ -605,7 +605,7 @@ def model_conv3d_bahdanau_onehot_human(X_train_shape):
     logits = Dense(2, name='logits')(x)
     outputs = Activation('softmax', name='softmax')(logits)
     model_attention = Model(inputs=inputs, outputs=outputs)
-    model_attention.compile(loss='categorical_crossentropy',
+    model_attention.compile(loss='binary_crossentropy',
                   optimizer='adam',
                   metrics=['accuracy'])
     return model_attention
@@ -651,7 +651,7 @@ def model1D_siamese_onehot_se(X_train_shape):
     logits = Dense(2, name='logits')(x)
     outputs = Activation('softmax', name='softmax')(logits)
     model = Model(inputs=input, outputs=outputs)
-    model.compile(loss='categorical_crossentropy',
+    model.compile(loss='binary_crossentropy',
                   optimizer='adam',
                   metrics=['accuracy'])
     return model
