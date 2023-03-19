@@ -7,7 +7,7 @@ le = LabelEncoder()
 le.fit(['A', 'C', 'G', 'T', 'N', '-'])
 
 input_path = sys.argv[1]
-chrom = int(sys.argv[2])
+chrom = sys.argv[2]
 output_X = sys.argv[3]
 output_y = sys.argv[4]
 context = 100
