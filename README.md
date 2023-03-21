@@ -44,4 +44,4 @@ see data/example.bed
 * from focal_loss import BinaryFocalLoss
 * import tensorflow as tf
 * model = tf.keras.models.load_model(f'Models/model')
-* predictions_graphylo_lstm = model.predict(examples_graphylo, batch_size=64)
+* predictions_graphylo_lstm = model.predict(examples_graphylo, batch_size=64)[:,1]
