@@ -56,6 +56,9 @@ data_path = sys.argv[1]
 model_path = sys.argv[2]
 target_path = sys.argv[3]
 gpu = int(sys.argv[4])
+num_filter = int(sys.argv[5])
+num_hidden = int(sys.argv[6])
+num_hidden_graph = int(sys.argv[7])
 
 le = LabelEncoder()
 le.fit(['A', 'C', 'G', 'T', 'N', '-'])
@@ -660,13 +663,13 @@ def model1D_siamese_se(X_train_shape):
     tf.keras.backend.clear_session()
     inputs = Input(shape=(X_train_shape[1:]), dtype='uint8')
     x = tf.one_hot(inputs, 6)
-    shared_conv = Conv1D(32, 11, padding = 'same', activation='relu', input_shape=inputs.shape[2:])
+    shared_conv = Conv1D(num_filter, 11, padding = 'same', activation='relu', input_shape=inputs.shape[2:])
     x = shared_conv(x)
     x = channel_attention(x)
     print(x.shape)
     x = MaxPooling2D((2,1), data_format='channels_first')(x)
     print(x.shape)
-    x = Conv1D(32, 11, padding = 'same', activation='relu', input_shape=x.shape[2:])(x)
+    x = Conv1D(num_filter, 11, padding = 'same', activation='relu', input_shape=x.shape[2:])(x)
     x = species_attention(x)
     x = Dropout(.3)(x)
     x = MaxPooling2D((2, 1), data_format='channels_first')(x)
@@ -674,13 +677,13 @@ def model1D_siamese_se(X_train_shape):
 
     
     x = Reshape((x.shape[1], -1))(x)
-    x = GCNConv(32, activation="relu")([x,A])
+    x = GCNConv(num_hidden_graph, activation="relu")([x,A])
     x = Dropout(.3)(x)
-    x = GCNConv(32, activation="relu", kernel_regularizer=l2(5e-4))([x,A])
+    x = GCNConv(num_hidden_graph, activation="relu", kernel_regularizer=l2(5e-4))([x,A])
     x = Dropout(.3)(x)
     print(x.shape)
     x = Flatten()(x)
-    x = Dense(64, activation='relu')(x)
+    x = Dense(num_hidden, activation='relu')(x)
     x = Dropout(.5)(x)
     logits = Dense(2, name='logits')(x)
     outputs = Activation('softmax', name='softmax')(logits)
