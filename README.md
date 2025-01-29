@@ -3,7 +3,8 @@ Graphylo is a Deep-Learning model that aims to extract useful information from e
 
 ## Downloading and Preprocessing alignment data.
 1. Start with making necessary repositories. $mkdir data   $mkdir Models 
-2. Clone this repository (git clone https://github.com/DongjoonLim/graphylo.git). Download anaconda3, activate anaconda3 and then follow commands below to create conda environment from yaml file. 
+2. Clone this repository (git clone https://github.com/DongjoonLim/graphylo.git). Download anaconda3, activate anaconda3 and then follow commands below to create conda environment from yaml file.
+3. And of course you need to install anaconda. Please go ahead and install anaconda.
 
 conda env create -f environment.yml
 
