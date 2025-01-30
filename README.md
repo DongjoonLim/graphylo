@@ -28,8 +28,9 @@ Graphylo leverages evolutionary sequence alignments (in .maf format) and ancestr
 
 ## Installation
 
-### 1. Create Environment
+### 1. Create Environment (Anaconda has to be installed first!)
 ```bash
+$ source .bashrc
 conda env create -f environment.yml
 conda activate graphylo
 ```
