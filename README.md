@@ -29,8 +29,8 @@ Graphylo leverages evolutionary sequence alignments (in .maf format) and ancestr
 ## Installation
 ### 1. Directory Setup
 ```bash
-mkdir data Models
 git clone https://github.com/DongjoonLim/graphylo.git
+mkdir data Models
 ```
 
 ### 2. Create Environment (Anaconda has to be installed first!)
