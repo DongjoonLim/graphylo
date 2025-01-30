@@ -33,7 +33,7 @@ git clone https://github.com/DongjoonLim/graphylo.git
 mkdir data Models
 ```
 
-### 2. Create Environment (Anaconda has to be installed first!)
+### 2. Create Environment (ANACONDA HAS TO BE INSTALLED FIRST!)
 ```bash
 $ source .bashrc
 conda env create -f environment.yml
