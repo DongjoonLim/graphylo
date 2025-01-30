@@ -107,7 +107,7 @@ import tensorflow as tf
 from focal_loss import BinaryFocalLoss
 
 # Load model
-model = tf.keras.models.load_model('Models/model', custom_objects={'BinaryFocalLoss': BinaryFocalLoss})
+model = tf.keras.models.load_model('Models/model')
 
 # Predict on new data
 predictions = model.predict(new_data, batch_size=64)[:, 1]
