@@ -79,7 +79,7 @@ python3 preprocessRevComp.py
 ## Training
 
 ### 1. Merge Chromosomal Data
-Combine all chromosomal data into single datasets:
+Combine all chromosomal data into single datasets and save them:
 ```python
 import numpy as np
 
@@ -91,13 +91,9 @@ y = np.concatenate([np.load(f"data/example_y_chr{i}.npy") for i in range(1,23)],
 ```
 
 ### 2. Start Training
+Run train_graphylo_siamese.py to train graphylo with the data you have preprocessed previously. python3 train_graphylo_siamese.py data_path output_model_path target_path gpu numberOfCNNFilters FCNNhiddenUnits GCNhiddenUnits
 ```bash
-python3 train_graphylo_siamese.py \
-    data/example_X.npy \
-    Models/model \
-    data/example_y.npy \
-    3 \              
-    32 32 32          
+python3 train_graphylo_siamese_rna.py data/example_X.npy Models/model data/example_y.npy 3 32 32 32       
 ```
 
 ## Prediction
