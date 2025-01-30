@@ -27,28 +27,27 @@ Graphylo leverages evolutionary sequence alignments (in .maf format) and ancestr
 - BED files defining regions of interest in hg38 coordinates (see [example](data/example.bed))
 
 ## Installation
-
-### 1. Create Environment (Anaconda has to be installed first!)
-```bash
-$ source .bashrc
-conda env create -f environment.yml
-conda activate graphylo
-```
-
-### 2. Install Additional Packages
-```bash
-pip install focal_loss pandas==1.3.4 spektral tensorflow==2.5.0 numpy==1.20.3 pyBigWig
-```
-
-## Data Preparation
-
 ### 1. Directory Setup
 ```bash
 mkdir data Models
 git clone https://github.com/DongjoonLim/graphylo.git
 ```
 
-### 2. Download Alignment Data
+### 2. Create Environment (Anaconda has to be installed first!)
+```bash
+$ source .bashrc
+conda env create -f environment.yml
+conda activate graphylo
+```
+
+### 3. Install Additional Packages
+```bash
+pip install focal_loss pandas==1.3.4 spektral tensorflow==2.5.0 numpy==1.20.3 pyBigWig
+```
+
+## Data Preparation
+
+### 1. Download Alignment Data
 Download .maf files to the `data` directory from the [Boreoeutherian Repository](http://repo.cs.mcgill.ca/PUB/blanchem/Boreoeutherian/).
 
 ## Preprocessing
