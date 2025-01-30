@@ -120,9 +120,7 @@ edges = [('hg38','_HP'),('panTro4','_HP'),('gorGor3','_HPG'),('ponAbe2','_HPGP')
 # edges = [(0,3),(1,3),(2,4),(3,4)]
 G.add_edges_from(edges)
 
-print('Graph Info:\n', nx.info(G))
 
-print('\nGraph Nodes: ', G.nodes.data())
 
 #Plot the graph
 # plt.figure(figsize=(15,15)) 
