@@ -96,8 +96,8 @@ python3 train_graphylo_siamese.py \
     data/example_X.npy \
     Models/model \
     data/example_y.npy \
-    3 \               # GPU ID
-    32 32 32          # CNN filters, FCNN units, GCN units
+    3 \              
+    32 32 32          
 ```
 
 ## Prediction
