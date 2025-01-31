@@ -67,8 +67,7 @@ chr1 2000 2001 1
 
 Process training data:
 ```bash
-python3 preprocess_graphs.py data/example_chr20.bed 20 \
-    data/example_X_chr20.npy data/example_y_chr20.npy
+python3 preprocess_graphs.py data/example_chr20.bed 20 data/example_X_chr20.npy data/example_y_chr20.npy
 ```
 
 ### 3. (Optional) Reverse Complement for RNA Data
