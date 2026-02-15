@@ -1,3 +1,12 @@
+"""Train GraphyloVar siamese network with focal loss for RNA-binding prediction.
+
+This script trains a siamese graph neural network that operates on
+multi-species phylogenetic alignment graphs to predict RNA-protein
+binding sites.  Uses focal loss to handle class imbalance.
+
+Usage:
+    python train_graphylo_focalloss_rna.py
+"""
 from sklearn.preprocessing import LabelEncoder
 # from Bio import AlignIO
 from sklearn.preprocessing import OneHotEncoder

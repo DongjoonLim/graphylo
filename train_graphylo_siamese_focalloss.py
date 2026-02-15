@@ -1,3 +1,13 @@
+"""Train GraphyloVar siamese network with focal loss for conservation prediction.
+
+
+This script trains a siamese graph neural network that operates on
+multi-species phylogenetic alignment graphs to predict base-level
+conservation scores. Uses focal loss to handle class imbalance.
+
+Usage:
+    python train_graphylo_siamese_focalloss.py
+"""
 from sklearn.preprocessing import LabelEncoder
 # from Bio import AlignIO
 from sklearn.preprocessing import OneHotEncoder

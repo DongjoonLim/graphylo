@@ -1,3 +1,12 @@
+"""Train GraphyloVar siamese network for RNA-binding site prediction.
+
+This script trains a siamese graph neural network that operates on
+multi-species phylogenetic alignment graphs to predict RNA-protein
+binding sites.  Uses standard cross-entropy loss.
+
+Usage:
+    python train_graphylo_siamese_rna.py
+"""
 from sklearn.preprocessing import LabelEncoder
 # from Bio import AlignIO
 from sklearn.preprocessing import OneHotEncoder
